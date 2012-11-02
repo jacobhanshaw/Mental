@@ -23,6 +23,7 @@ kAnimationStyle;
 {
     UIImageView *currentImageView;
     UIImageView *nextImageView;
+    UIImageView *objectTest;
     UIView *floatingView;
     
     int characterState;
@@ -37,6 +38,7 @@ kAnimationStyle;
 
 @property (nonatomic) UIImageView *currentImageView;
 @property (nonatomic) UIImageView *nextImageView;
+@property (nonatomic) UIImageView *objectTest;
 @property (nonatomic) UIView *floatingView;
 
 @property (readwrite) int characterState;

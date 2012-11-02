@@ -10,7 +10,7 @@
 
 @implementation LevelViewController
 
-@synthesize currentImageView, nextImageView, floatingView, characterState, loops, directionHorizontal, directionVertical, goalRoomRow, goalRoomCol, isAnimating, hasBeenPressed;
+@synthesize currentImageView, nextImageView, floatingView, characterState, loops, directionHorizontal, directionVertical, goalRoomRow, goalRoomCol, isAnimating, hasBeenPressed, objectTest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,6 +45,15 @@
     self.nextImageView = [[UIImageView alloc] initWithImage:[AppModel sharedAppModel].nextRoom.image];
     self.nextImageView.frame = CGRectMake(-480, -480, [AppModel sharedAppModel].screenWidth, [AppModel sharedAppModel].screenHeight);;
     [self.view addSubview:self.nextImageView];
+    
+    UIImage *objectImage;
+    if(!(objectImage = [UIImage imageNamed:@"object_1_5_1.png"])) NSLog(@"ERROR loading image: object_1_5_1.png");
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:objectImage];
+    imageView.frame = CGRectMake(50, 50, 200, 200);
+    self.objectTest = imageView;
+    self.objectTest.bounds = self.objectTest.frame;
+    self.objectTest.userInteractionEnabled = YES;
+    [self.view addSubview: self.objectTest];
     
     UIView *floatingViewFrameAlloc = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [AppModel sharedAppModel].screenWidth, [AppModel sharedAppModel].screenHeight)];
     self.floatingView = floatingViewFrameAlloc;
@@ -134,6 +143,20 @@
     [downSwipe setDirection:(UISwipeGestureRecognizerDirectionDown)];
     downSwipe.delegate = self;
     [self.view addGestureRecognizer:downSwipe];
+    
+    UITapGestureRecognizer *tap  =  [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
+    tap.delegate = self;
+    tap.numberOfTouchesRequired = 1;
+    tap.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:tap];
+    //[self.objectTest addGestureRecognizer:tap];
+}
+
+-(void)tap:(UIGestureRecognizer *)gestureRecognizer{
+    NSLog(@"Got tap");
+    CGPoint centerOfTap = [gestureRecognizer locationInView:self.view];
+    NSLog(@"%@", [self.objectTest pointInside:centerOfTap withEvent:nil] ? @"YES":@"NO");
+    NSLog(@"%@", [self.objectTest pointInside:centerOfTap withEvent:nil] ? @"YES":@"NO");
 }
 
 - (void)leftSwipe
